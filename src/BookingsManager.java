@@ -18,43 +18,58 @@ public class BookingsManager {
         Scanner input = new Scanner(System.in);
 
         bm.loadBookingsFile();
-        //bm.showBookingByID(2);
-        //bm.addNewBooking();
-        bm.deleteBookingByID(input);
+
+        while (true) {
+            System.out.println("1. Show existing booking");
+            System.out.println("2. Add new booking");
+            System.out.println("3. Delete existing booking");
+            System.out.println("4. Exit");
+
+            System.out.print("Enter an option please (1-4): ");
+            int option = input.nextInt();
+
+            switch (option) {
+                case 1:
+                    bm.showBookingByID(input);
+                    break;
+                case 2:
+                    bm.addNewBooking();
+                    break;
+                case 3:
+                    bm.deleteBookingByID(input);
+                    break;
+                case 4:
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid option. Please, try again.");
+            }
+        }
     }
 
     public void deleteBookingByID(Scanner input) {
-        int i = 0;
         String bID;
         Boolean bookingFound = false;
-        Node bookingNode;
+        int i = 0;
+        Node bookingNode = null;
         Element bookingElement, rootElement;
 
 
         System.out.print("Enter the id from the booking you wish to delete: ");
         bID = input.nextLine();
-
-
         Document doc = createParsedDocument(bookingsFile);
         rootElement = doc.getDocumentElement();
         bookings = doc.getElementsByTagName("booking");
 
-            while (!bookingFound) {
-                bookingNode = bookings.item(i);
-                if (bookingNode.getNodeType() == Node.ELEMENT_NODE) {
-                    bookingElement = (Element) bookingNode;
-                    if (bookingElement.getAttribute("location_number").equals(String.valueOf(bID))) {
-                        rootElement.removeChild(bookingNode);
-                        bookingFound = true;
-                    }
+        while (!bookingFound) {
+            bookingNode = bookings.item(i);
+            if (bookingNode.getNodeType() == Node.ELEMENT_NODE) {
+                bookingElement = (Element) bookingNode;
+                if (bookingElement.getAttribute("location_number").equals(String.valueOf(bID))) {
+                    rootElement.removeChild(bookingNode);
+                    bookingFound = true;
                 }
-                i++;
             }
-
-            if (!bookingFound) {
-                System.out.println("ERROR - Booking with ID: '" + bID + "' has not been found. Please, enter a valid number.");
-                deleteBookingByID(input);
-            }
+            i++;
         }
 
         // UPDATING THE XML FILE
@@ -166,18 +181,22 @@ public class BookingsManager {
         }
     }
 
-    public void showBookingByID(int bID) {
+    public void showBookingByID(Scanner input) {
         Boolean bookingFound = false;
+        String bID;
         int i = 0;
         Node node;
         Element element;
+
+        System.out.print("Enter the id from the booking you wish to delete: ");
+        bID = input.nextLine();
 
         try {
             while (!bookingFound) {
                 node = bookings.item(i);
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     element = (Element) node;
-                    if (element.getAttribute("location_number").equals(String.valueOf(bID))) {
+                    if (element.getAttribute("location_number").equals(bID)) {
                         printBookingInfo(element);
                         bookingFound = true;
                     }

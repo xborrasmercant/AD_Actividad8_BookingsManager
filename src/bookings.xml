@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <bookings>
-    <booking location_number="2">
-        <client id_client="3">Salvador Bauza Piza</client>
-        <agency id_agency="1">Expedia</agency>
-        <price>252,93</price>
-        <room id_type="1">Double</room>
-        <hotel id_hotel="5">Sineu rooms</hotel>
-        <check_in>08/06/2018</check_in>
-        <room_nights>2</room_nights>
-    </booking>
     <booking location_number="3">
         <client id_client="4">Rolando Cuello Baez</client>
         <agency id_agency="2">Booking.com</agency>
@@ -287,15 +278,6 @@
         <hotel id_hotel="2">Hotel Palma Beach</hotel>
         <check_in>12/04/2018</check_in>
         <room_nights>5</room_nights>
-    </booking>
-    <booking location_number="34">
-        <client id_client="9">Lluc Nicolau Fraile</client>
-        <agency id_agency="1">Expedia</agency>
-        <price>55,81</price>
-        <room id_type="1">Double</room>
-        <hotel id_hotel="2">Hotel Palma Beach</hotel>
-        <check_in>03/01/2018</check_in>
-        <room_nights>1</room_nights>
     </booking>
     <booking location_number="35">
         <client id_client="9">Lluc Nicolau Fraile</client>
@@ -4076,15 +4058,6 @@
         <hotel id_hotel="4">Manacor Palace </hotel>
         <check_in>03/03/2018</check_in>
         <room_nights>2</room_nights>
-    </booking>
-    <booking location_number="455">
-        <client id_client="1">Mateo Alberti Valades</client>
-        <agency id_agency="1">Expedia</agency>
-        <price>51</price>
-        <room id_type="1">Double</room>
-        <hotel id_hotel="2">Hotel Palma Beach</hotel>
-        <check_in>12/03/2018</check_in>
-        <room_nights>1</room_nights>
     </booking>
     <booking location_number="456">
         <client id_client="1">Mateo Alberti Valades</client>
@@ -8999,5 +8972,14 @@
         <hotel>f</hotel>
         <check_in>08/06/2018</check_in>
         <room_nights/>
+    </booking>
+    <booking location_number="7079">
+        <client id_client="292">hola</client>
+        <agency id_agency="867" id_hotel="370">hola</agency>
+        <price>907,0</price>
+        <room id_type="3">Individual</room>
+        <hotel>hola</hotel>
+        <check_in>08/06/2018</check_in>
+        <room_nights>hola</room_nights>
     </booking>
 </bookings>

@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <bookings>
-    <booking location_number="1">
-        <client id_client="1">Mateo Alberti Valades</client>
-        <agency id_agency="1">Expedia</agency>
-        <price>252,93</price>
-        <room id_type="1">Double</room>
-        <hotel id_hotel="5">Sineu rooms</hotel>
-        <check_in>08/06/2018</check_in>
-        <room_nights>2</room_nights>
-    </booking>
     <booking location_number="2">
         <client id_client="3">Salvador Bauza Piza</client>
         <agency id_agency="1">Expedia</agency>

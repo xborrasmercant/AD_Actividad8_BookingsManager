@@ -15,34 +15,64 @@ public class BookingsManager {
 
     public static void main(String[] args) {
         BookingsManager bm = new BookingsManager();
+        Scanner input = new Scanner(System.in);
 
         bm.loadBookingsFile();
         //bm.showBookingByID(2);
-        bm.addNewBooking();
+        //bm.addNewBooking();
+        bm.deleteBookingByID(input);
     }
 
-    public void deleteBookingByID(int bID) {
-        Boolean bookingFound = false;
+    public void deleteBookingByID(Scanner input) {
         int i = 0;
-        Node node;
-        Element element;
+        String bID;
+        Boolean bookingFound = false;
+        Node bookingNode;
+        Element bookingElement, rootElement;
 
-        try {
+
+        System.out.print("Enter the id from the booking you wish to delete: ");
+        bID = input.nextLine();
+
+
+        Document doc = createParsedDocument(bookingsFile);
+        rootElement = doc.getDocumentElement();
+        bookings = doc.getElementsByTagName("booking");
+
             while (!bookingFound) {
-                node = bookings.item(i);
-                if (node.getNodeType() == Node.ELEMENT_NODE) {
-                    element = (Element) node;
-                    if (element.getAttribute("location_number").equals(String.valueOf(bID))) {
-                        printBookingInfo(element);
+                bookingNode = bookings.item(i);
+                if (bookingNode.getNodeType() == Node.ELEMENT_NODE) {
+                    bookingElement = (Element) bookingNode;
+                    if (bookingElement.getAttribute("location_number").equals(String.valueOf(bID))) {
+                        rootElement.removeChild(bookingNode);
                         bookingFound = true;
                     }
                 }
                 i++;
             }
+
+            if (!bookingFound) {
+                System.out.println("ERROR - Booking with ID: '" + bID + "' has not been found. Please, enter a valid number.");
+                deleteBookingByID(input);
+            }
         }
-        catch (NullPointerException e){
-            System.out.println("ERROR - Booking with ID: '" + bID + "' has not been found. Please, enter a valid number.");
+
+        // UPDATING THE XML FILE
+        try {
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes"); // Enable indentation
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(bookingsFile);
+            transformer.transform(source, result);
+            trimWhitespaceFromXML();
+
+            System.out.println("Booking with ID: " + bID + " has been deleted successfully!");
         }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void addNewBooking(){

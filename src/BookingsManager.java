@@ -19,9 +19,57 @@ public class BookingsManager {
 
     public void addNewBooking(){
         Scanner input = new Scanner(System.in);
+        Document doc = createParsedDocument(bookingsFile);
+        Element rootElement, bookingElement, clientElement, agencyElement, priceElement, roomElement, hotelElement, checkinElement, nightsElement;
+        String client, agency, price, room, hotel, checkin, nights;
 
+        // Blank elements are created
+        rootElement = doc.getDocumentElement();
+        bookingElement = doc.createElement("booking");
+        clientElement = doc.createElement("client");
+        agencyElement = doc.createElement("agency");
+        priceElement = doc.createElement("price");
+        roomElement = doc.createElement("room");
+        hotelElement = doc.createElement("hotel");
+        checkinElement = doc.createElement("check_in");
+        nightsElement = doc.createElement("room_nights");
+
+        // <CLIENT>
         System.out.print("Please, enter your name: ");
+        client = input.nextLine();
+        clientElement.appendChild(doc.createTextNode(client));
+        clientElement.setAttribute("id_client", Double.toString((int) Math.random()*1000));
 
+        // <AGENCY>
+        System.out.print("Please, enter your agency: ");
+        agency = input.nextLine();
+        agencyElement.appendChild(doc.createTextNode(agency));
+        agencyElement.setAttribute("id_agency", Double.toString((int) Math.random()*1000));
+
+        // <PRICE>
+        priceElement.appendChild(doc.createTextNode(Double.toString(Math.random()*1000)));
+
+        // <ROOM>
+        System.out.print("Please, enter the room type (1: Double | 2: Apartament | 3: Individual | 4. Suite): ");
+        try   {
+            room = input.nextLine();
+            rootElement.appendChild(doc.createTextNode(client));
+            roomElement.setAttribute("id_client", Double.toString((int) Math.random()*1000));
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // <HOTEL>
+        System.out.print("Please, enter the hotel name: ");
+        hotel = input.nextLine();
+
+        // <CHECK_IN>
+
+        // <NIGHTS>
+        System.out.print("Please, enter the amount of nights: ");
+        nights = input.nextLine();
     }
 
     public void showBookingByID(int bID) {
@@ -64,17 +112,51 @@ public class BookingsManager {
     public void loadBookingsFile() {
         try {
             bookingsFile = new File("src/bookings.xml");
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            Document doc = builder.parse(bookingsFile);
+            Document doc = createParsedDocument(bookingsFile);
 
             bookings = doc.getElementsByTagName("booking");
-
         }
         catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+
+    public Document createParsedDocument(File file) {
+        try{
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc = builder.parse(file);
+
+            return doc;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    public String checkRoomType (String roomType) {
+
+        if (roomType == "1") {
+            return "Double";
+        }
+        else if (roomType == "2") {
+            return "Apartament";
+        }
+        else if (roomType == "3") {
+            return "Individual";
+        }
+        else if (roomType == "4") {
+            return "Suite";
+        }
+        else {
+            "El "
+        }
+
+    }
+
 
     public File getBookingsFile() {
         return bookingsFile;

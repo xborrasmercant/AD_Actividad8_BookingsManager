@@ -20,13 +20,18 @@ public class BookingsManager {
         bm.loadBookingsFile();
 
         while (true) {
+            System.out.println();
+            System.out.println("===============================");
             System.out.println("1. Show existing booking");
             System.out.println("2. Add new booking");
             System.out.println("3. Delete existing booking");
-            System.out.println("4. Exit");
+            System.out.println("4. Modify existing booking");
+            System.out.println("5. Exit");
+            System.out.println("===============================");
 
-            System.out.print("Enter an option please (1-4): ");
+            System.out.print("Enter an option please (1-5): ");
             int option = input.nextInt();
+            input.nextLine();
 
             switch (option) {
                 case 1:
@@ -39,10 +44,103 @@ public class BookingsManager {
                     bm.deleteBookingByID(input);
                     break;
                 case 4:
+                    bm.modifyBookingByID(input);
+                    break;
+                case 5:
                     System.exit(0);
                 default:
                     System.out.println("Invalid option. Please, try again.");
             }
+        }
+    }
+
+    public void modifyBookingByID(Scanner input) {
+        Element rootElement = null, bookingElement = null, clientElement = null, agencyElement = null, priceElement = null, roomElement = null, hotelElement = null, checkinElement = null, nightsElement = null;
+        String client, agency, roomVal, roomId, hotel, nights;
+        String[] room_info;
+        String bID;
+        Boolean bookingFound = false;
+        int i = 0;
+        Node bookingNode = null;
+
+        System.out.print("Enter the id from the booking you wish to modify: ");
+        bID = input.nextLine();
+        Document doc = createParsedDocument(bookingsFile);
+        bookings = doc.getElementsByTagName("booking");
+
+        while (!bookingFound) {
+            bookingNode = bookings.item(i);
+            if (bookingNode != null) {
+                if (bookingNode.getNodeType() == Node.ELEMENT_NODE) {
+                    bookingElement = (Element) bookingNode;
+                    if (bookingElement.getAttribute("location_number").equals(String.valueOf(bID))) {
+
+                        clientElement = (Element) bookingElement.getElementsByTagName("client").item(0);
+                        agencyElement = (Element) bookingElement.getElementsByTagName("agency").item(0);
+                        priceElement = (Element) bookingElement.getElementsByTagName("price").item(0);
+                        roomElement = (Element) bookingElement.getElementsByTagName("room").item(0);
+                        hotelElement = (Element) bookingElement.getElementsByTagName("hotel").item(0);
+                        nightsElement = (Element) bookingElement.getElementsByTagName("room_nights").item(0);
+
+                        // <CLIENT>
+                        System.out.println();
+                        System.out.print("Please, enter your name: ");
+                        client = input.nextLine();
+                        clientElement.setTextContent(client);
+
+                        // <AGENCY>
+                        System.out.println();
+                        System.out.print("Please, enter your agency: ");
+                        agency = input.nextLine();
+                        clientElement.setTextContent(agency);
+
+                        // <PRICE>
+                        priceElement.appendChild(doc.createTextNode((int) (Math.random() * 1000) + ",0"));
+
+                        // <ROOM>
+                        System.out.println();
+                        System.out.print("Please, enter the room type ");
+                        room_info = addRoomType(input);
+                        roomVal = room_info[1];
+                        clientElement.setTextContent(roomVal);
+
+                        // <HOTEL>
+                        System.out.println();
+                        System.out.print("Please, enter the hotel name: ");
+                        hotel = input.nextLine();
+                        clientElement.setTextContent(hotel);
+
+                        // <NIGHTS>
+                        System.out.println();
+                        System.out.print("Please, enter the amount of nights: ");
+                        nights = input.nextLine();
+                        clientElement.setTextContent(nights);
+
+                        bookingFound = true;
+                    }
+                }
+                i++;
+            } else {
+                System.out.println("ERROR - Booking with ID: '" + bID + "' has not been found. Please, enter a valid id.");
+                return;
+            }
+        }
+
+        // UPDATING THE XML FILE
+        try {
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes"); // Enable indentation
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(bookingsFile);
+            transformer.transform(source, result);
+            trimWhitespaceFromXML();
+
+            System.out.println("Your booking with ID '" + bID + "' has been modified successfully!");
+
+        }
+        catch(Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -62,15 +160,23 @@ public class BookingsManager {
 
         while (!bookingFound) {
             bookingNode = bookings.item(i);
-            if (bookingNode.getNodeType() == Node.ELEMENT_NODE) {
-                bookingElement = (Element) bookingNode;
-                if (bookingElement.getAttribute("location_number").equals(String.valueOf(bID))) {
-                    rootElement.removeChild(bookingNode);
-                    bookingFound = true;
+            if (bookingNode != null) {
+                if (bookingNode.getNodeType() == Node.ELEMENT_NODE) {
+                    bookingElement = (Element) bookingNode;
+                    if (bookingElement.getAttribute("location_number").equals(String.valueOf(bID))) {
+                        rootElement.removeChild(bookingNode);
+                        bookingFound = true;
+                    }
                 }
+
+                i++;
             }
-            i++;
+            else {
+                System.out.println("ERROR - Booking with ID: '" + bID + "' has not been found. Please, enter a valid id.");
+                return;
+            }
         }
+
 
         // UPDATING THE XML FILE
         try {
@@ -151,7 +257,8 @@ public class BookingsManager {
         nightsElement.appendChild(doc.createTextNode(nights));
 
         // BOOKING
-        bookingElement.setAttribute("location_number", Integer.toString((int) (Math.random() * 10000)));
+        String booking_id = Integer.toString((int) (Math.random() * 10000));
+        bookingElement.setAttribute("location_number", booking_id);
         bookingElement.appendChild(clientElement);
         bookingElement.appendChild(agencyElement);
         bookingElement.appendChild(priceElement);
@@ -173,7 +280,7 @@ public class BookingsManager {
             transformer.transform(source, result);
             trimWhitespaceFromXML();
 
-            System.out.println("Your booking has been added successfully!");
+            System.out.println("Your booking with ID '" + booking_id + "' has been added successfully!");
 
         }
         catch(Exception e) {
@@ -188,8 +295,11 @@ public class BookingsManager {
         Node node;
         Element element;
 
-        System.out.print("Enter the id from the booking you wish to delete: ");
+        System.out.print("Enter the id from the booking you wish to show: ");
         bID = input.nextLine();
+
+        Document doc = createParsedDocument(bookingsFile);
+        bookings = doc.getElementsByTagName("booking");
 
         try {
             while (!bookingFound) {
@@ -220,6 +330,7 @@ public class BookingsManager {
         System.out.println("Hotel: " + element.getElementsByTagName("hotel").item(0).getTextContent());
         System.out.println("Check-in: " + element.getElementsByTagName("check_in").item(0).getTextContent());
         System.out.println("Nights: " + element.getElementsByTagName("room_nights").item(0).getTextContent());
+        System.out.println();
     }
 
     public void loadBookingsFile() {

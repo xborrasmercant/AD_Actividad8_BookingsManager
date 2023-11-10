@@ -7,6 +7,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.*;
 import java.io.File;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class BookingsManager {
@@ -16,6 +17,7 @@ public class BookingsManager {
     public static void main(String[] args) {
         BookingsManager bm = new BookingsManager();
         Scanner input = new Scanner(System.in);
+        String option;
 
         bm.loadBookingsFile();
 
@@ -30,27 +32,26 @@ public class BookingsManager {
             System.out.println("===============================");
 
             System.out.print("Enter an option please (1-5): ");
-            int option = input.nextInt();
-            input.nextLine();
+            option = input.nextLine();
 
-            switch (option) {
-                case 1:
-                    bm.showBookingByID(input);
-                    break;
-                case 2:
-                    bm.addNewBooking();
-                    break;
-                case 3:
-                    bm.deleteBookingByID(input);
-                    break;
-                case 4:
-                    bm.modifyBookingByID(input);
-                    break;
-                case 5:
-                    System.exit(0);
-                default:
-                    System.out.println("Invalid option. Please, try again.");
-            }
+                switch (option) {
+                    case "1":
+                        bm.showBookingByID(input);
+                        break;
+                    case "2":
+                        bm.addNewBooking();
+                        break;
+                    case "3":
+                        bm.deleteBookingByID(input);
+                        break;
+                    case "4":
+                        bm.modifyBookingByID(input);
+                        break;
+                    case "5":
+                        System.exit(0);
+                    default:
+                        System.out.println("Invalid option. Please, try again.");
+                }
         }
     }
 
@@ -92,7 +93,7 @@ public class BookingsManager {
                         System.out.println();
                         System.out.print("Please, enter your agency: ");
                         agency = input.nextLine();
-                        clientElement.setTextContent(agency);
+                        agencyElement.setTextContent(agency);
 
                         // <PRICE>
                         priceElement.appendChild(doc.createTextNode((int) (Math.random() * 1000) + ",0"));
@@ -102,19 +103,19 @@ public class BookingsManager {
                         System.out.print("Please, enter the room type ");
                         room_info = addRoomType(input);
                         roomVal = room_info[1];
-                        clientElement.setTextContent(roomVal);
+                        roomElement.setTextContent(roomVal);
 
                         // <HOTEL>
                         System.out.println();
                         System.out.print("Please, enter the hotel name: ");
                         hotel = input.nextLine();
-                        clientElement.setTextContent(hotel);
+                        hotelElement.setTextContent(hotel);
 
                         // <NIGHTS>
                         System.out.println();
                         System.out.print("Please, enter the amount of nights: ");
                         nights = input.nextLine();
-                        clientElement.setTextContent(nights);
+                        nightsElement.setTextContent(nights);
 
                         bookingFound = true;
                     }

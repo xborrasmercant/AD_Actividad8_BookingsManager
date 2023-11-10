@@ -328,11 +328,11 @@
         <room_nights>6</room_nights>
     </booking>
     <booking location_number="42">
-        <client id_client="1">Mateo Alberti Valades</client>
-        <agency id_agency="3">Atrapalo.com</agency>
-        <price>715,5</price>
-        <room id_type="1">Double</room>
-        <hotel id_hotel="2">Hotel Palma Beach</hotel>
+        <client id_client="1">Blabla</client>
+        <agency id_agency="3">Blabla S.A.</agency>
+        <price>715,5881,0</price>
+        <room id_type="1">Suite</room>
+        <hotel id_hotel="2">Blabla Hoteles</hotel>
         <check_in>05/04/2018</check_in>
         <room_nights>6</room_nights>
     </booking>
@@ -733,9 +733,9 @@
         <room_nights>3</room_nights>
     </booking>
     <booking location_number="87">
-        <client id_client="2">Illan Hanssens Cale</client>
+        <client id_client="2">6</client>
         <agency id_agency="2">Booking.com</agency>
-        <price>54</price>
+        <price>54684,0</price>
         <room id_type="1">Double</room>
         <hotel id_hotel="4">Manacor Palace </hotel>
         <check_in>24/01/2018</check_in>
@@ -8984,5 +8984,14 @@
         <hotel>ff</hotel>
         <check_in>08/06/2018</check_in>
         <room_nights>f</room_nights>
+    </booking>
+    <booking location_number="3837">
+        <client id_client="495">Pepito</client>
+        <agency id_agency="13" id_hotel="891">Pepito</agency>
+        <price>213,0</price>
+        <room id_type="3">Individual</room>
+        <hotel/>
+        <check_in>08/06/2018</check_in>
+        <room_nights/>
     </booking>
 </bookings>
